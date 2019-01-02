@@ -16,6 +16,15 @@ green = lambda s: colorize(s, "green")
 blue = lambda s: colorize(s, "blue")
 
 
+def separate(func):
+    def wrapper(*args, **kwargs):
+        print(yellow("------------------------------------------"))
+        res = func(*args, **kwargs)
+        print(yellow("------------------------------------------"))
+        return res
+    return wrapper
+
+
 def async_run_tasks(coro_func_list, para_list):
     loop = asyncio.get_event_loop()
     tasks = []
