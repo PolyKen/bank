@@ -51,7 +51,7 @@ class Deposit(Model):
 
     def __init__(self, _id, _quantity, _deposit_type, _currency_type, _account_id, _start_time):
         super(Deposit, self).__init__(id=_id, quantity=_quantity, deposit_type=_deposit_type,
-                                      currency_type=_currency_type, acccount_id=_account_id,
+                                      currency_type=_currency_type, account_id=_account_id,
                                       start_time=_start_time)
 
 
