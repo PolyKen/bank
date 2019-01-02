@@ -11,6 +11,7 @@ def join(attrs, pattern=','):
 def execute_sql(sql, *args):
     print(yellow("Execute SQL: {};".format(sql.replace('?', '{}').format(*args))))
     conn = pymysql.connect(host=db_host, user=db_user, passwd=db_password, db="bank")
+    results = None
     try:
         with conn.cursor() as cursor:
             cursor.execute(sql.replace('?', '{}').format(*args) + ";")
@@ -23,7 +24,7 @@ def execute_sql(sql, *args):
         print(red(e))
     finally:
         conn.close()
-    return 0
+        return results
 
 
 class Field(object):
@@ -127,6 +128,8 @@ class Model(dict, metaclass=ModelMetaClass):
     @classmethod
     def select(cls, column_list=None, clause=None):
         if column_list:
+            if type(column_list) is str:
+                column_list = [column_list]
             column_list = join(column_list)
         else:
             column_list = "*"

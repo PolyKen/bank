@@ -39,6 +39,16 @@ class Account(Model):
     def __init__(self, _id, _branch_id, _user_id):
         super(Account, self).__init__(id=_id, branch_id=_branch_id, user_id=_user_id)
 
+    def deposit(self, quantity, deposit_type, currency_type):
+        deposit = Deposit(_id=None, _quantity=quantity, _deposit_type=deposit_type,
+                          _currency_type=currency_type, _account_id=self.id, _start_time=None)
+        deposit.insert()
+
+    def withdraw(self, deposit_id, quantity):
+        results = Deposit.select(["quantity", "account_id"], "where id={}".format(deposit_id))
+        print(self.id)
+        print(results)
+
 
 class Deposit(Model):
     __table__ = 'deposit'
@@ -114,4 +124,8 @@ if __name__ == '__main__':
     # credit_card_user.insert()
     # deposit.insert()
 
-    User.select(["id", "name"], "where city=\"San Francisco\"")
+    User.select(["id", "name"])
+    account = Account(_id=None, _branch_id=2001, _user_id=15003)
+    account.insert()
+    account.deposit(quantity=1000, currency_type=1, deposit_type=1)
+    account.withdraw(deposit_id=100, quantity=1000)
