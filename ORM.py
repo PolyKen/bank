@@ -150,7 +150,12 @@ class Model(dict, metaclass=ModelMetaClass):
             pk_list.append("{}={}".format(k, v))
 
         results = cls.select(clause="WHERE {}".format(join(pk_list)))
-        return cls.__new__(cls, *results[0])
+
+        assert len(cls.__fields__) == len(results[0])
+        values = {}
+        for i in range(len(cls.__fields__)):
+            values[cls.__fields__[i]] = results[0][i]
+        return cls(**values)
 
     @classmethod
     def update(cls, clause, **kwargs):
