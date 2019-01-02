@@ -21,6 +21,7 @@ def separate(func):
         print(yellow("------------------------------------------"))
         res = func(*args, **kwargs)
         print(yellow("------------------------------------------"))
+        print()
         return res
     return wrapper
 

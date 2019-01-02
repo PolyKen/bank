@@ -11,9 +11,9 @@ class User(Model):
     mobile = BigIntegerField(30)
     email = StringField(30)
 
-    def __init__(self, _id, _name, _tel, _address, _city, _mobile, _email):
-        super(User, self).__init__(id=_id, name=_name, tel=_tel, address=_address,
-                                   city=_city, mobile=_mobile, email=_email)
+    def __init__(self, id, name, tel, address, city, mobile, email):
+        super(User, self).__init__(id=id, name=name, tel=tel, address=address,
+                                   city=city, mobile=mobile, email=email)
 
 
 class CreditCardUser(Model):
@@ -25,9 +25,9 @@ class CreditCardUser(Model):
     job = StringField(20)
     income = IntegerField(30)
 
-    def __init__(self, _id, _level, _contact_person, _contact_tel, _job, _income):
-        super(CreditCardUser, self).__init__(id=_id, level=_level, contact_person=_contact_person,
-                                             contact_tel=_contact_tel, job=_job, income=_income)
+    def __init__(self, id, level, contact_person, contact_tel, job, income):
+        super(CreditCardUser, self).__init__(id=id, level=level, contact_person=contact_person,
+                                             contact_tel=contact_tel, job=job, income=income)
 
 
 class Account(Model):
@@ -36,12 +36,12 @@ class Account(Model):
     branch_id = IntegerField(11)
     user_id = IntegerField(11)
 
-    def __init__(self, _id, _branch_id, _user_id):
-        super(Account, self).__init__(id=_id, branch_id=_branch_id, user_id=_user_id)
+    def __init__(self, id, branch_id, user_id):
+        super(Account, self).__init__(id=id, branch_id=branch_id, user_id=user_id)
 
     def deposit(self, quantity, deposit_type, currency_type):
-        deposit = Deposit(_id=None, _quantity=quantity, _deposit_type=deposit_type,
-                          _currency_type=currency_type, _account_id=self.id, _start_time=None)
+        deposit = Deposit(id=None, quantity=quantity, deposit_type=deposit_type,
+                          currency_type=currency_type, account_id=self.id, start_time=None)
         deposit.insert()
 
     def withdraw(self, deposit_id, quantity):
@@ -54,7 +54,7 @@ class Account(Model):
         if _quantity < quantity:
             raise Exception("deposit {} not enough".format(deposit_id))
         else:
-            Deposit.update("where id={}".format(deposit_id), quantity=_quantity-quantity)
+            Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
 
 
 class Deposit(Model):
@@ -66,10 +66,18 @@ class Deposit(Model):
     account_id = IntegerField(11)
     start_time = TimestampField()
 
-    def __init__(self, _id, _quantity, _deposit_type, _currency_type, _account_id, _start_time):
-        super(Deposit, self).__init__(id=_id, quantity=_quantity, deposit_type=_deposit_type,
-                                      currency_type=_currency_type, account_id=_account_id,
-                                      start_time=_start_time)
+    def __init__(self, id, quantity, deposit_type, currency_type, account_id, start_time):
+        super(Deposit, self).__init__(id=id, quantity=quantity, deposit_type=deposit_type,
+                                      currency_type=currency_type, account_id=account_id,
+                                      start_time=start_time)
+
+    def calc_interest(self, quantity):
+        if self.quantity < quantity:
+            raise Exception("deposit {} not enough".format(self.id))
+        time_delta = "now()-{}".format(self.start_time)
+        sql = "SELECT calc_interest({}, {}, {})".format(quantity, self.deposit_type, time_delta)
+        res = execute_sql(sql)
+        return float(res[0])
 
 
 class Overdraft(Model):
@@ -80,20 +88,20 @@ class Overdraft(Model):
     account_id = IntegerField(11)
     start_time = TimestampField()
 
-    def __init__(self, _id, _quantity, _currency_type, _account_id, _start_time):
-        super(Overdraft, self).__init__(id=_id, quantity=_quantity, currency_type=_currency_type,
-                                        acccount_id=_account_id, start_time=_start_time)
+    def __init__(self, id, quantity, currency_type, account_id, start_time):
+        super(Overdraft, self).__init__(id=id, quantity=quantity, currency_type=currency_type,
+                                        acccount_id=account_id, start_time=start_time)
 
 
 class InterestRate(Model):
     __table__ = 'interest_rate'
     id = IntegerField(11)
-    type = StringField(30)
+    interest_type = StringField(30)
     rate = FloatField()
     due_months = IntegerField(11)
 
-    def __init__(self, _id, _type, _rate, _due_months):
-        super(InterestRate, self).__init__(id=_id, type=_type, rate=_rate, due_months=_due_months)
+    def __init__(self, id, interest_type, rate, due_months):
+        super(InterestRate, self).__init__(id=id, type=interest_type, rate=rate, due_months=due_months)
 
 
 class Currency(Model):
@@ -102,8 +110,8 @@ class Currency(Model):
     name = StringField(20)
     exchange_rate = FloatField()
 
-    def __init__(self, _id, _name, _exchange_rate):
-        super(Currency, self).__init__(id=_id, name=_name, exchange_rate=_exchange_rate)
+    def __init__(self, id, name, exchange_rate):
+        super(Currency, self).__init__(id=id, name=name, exchange_rate=exchange_rate)
 
 
 class FinancialProduct(Model):
@@ -114,9 +122,9 @@ class FinancialProduct(Model):
     interest_rate = FloatField()
     guaranteed = IntegerField(1)
 
-    def __init__(self, _id, _name, _due_months, _interest_rate, _guaranteed):
-        super(FinancialProduct, self).__init__(id=_id, name=_name, due_months=_due_months,
-                                               interest_rate=_interest_rate, guaranteed=_guaranteed)
+    def __init__(self, id, name, due_months, interest_rate, guaranteed):
+        super(FinancialProduct, self).__init__(id=id, name=name, due_months=due_months,
+                                               interest_rate=interest_rate, guaranteed=guaranteed)
 
 
 if __name__ == '__main__':
@@ -132,6 +140,13 @@ if __name__ == '__main__':
     # deposit.insert()
 
     User.select(["id", "name"])
-    account = Account(_id=10026, _branch_id=2001, _user_id=15003)
-    account.deposit(quantity=1000, currency_type=1, deposit_type=1)
-    account.withdraw(deposit_id=13, quantity=1000)
+    a = Account(id=10026, branch_id=2001, user_id=15003)
+    a.deposit(quantity=1000, currency_type=1, deposit_type=1)
+    a.withdraw(deposit_id=13, quantity=1000)
+
+    d = Deposit(id=1, account_id=10010, currency_type=2, deposit_type=2, quantity=10800, start_time=None)
+    d.calc_interest(5000)
+    d.calc_interest(20000)
+
+    d2 = Deposit.query(id=13)
+    d2.calc_interest(100)

@@ -144,6 +144,15 @@ class Model(dict, metaclass=ModelMetaClass):
         return execute_sql(select_sql, column_list)
 
     @classmethod
+    def query(cls, **kwargs):
+        pk_list = []
+        for k, v in kwargs.items():
+            pk_list.append("{}={}".format(k, v))
+
+        results = cls.select(clause="WHERE {}".format(join(pk_list)))
+        return cls.__new__(cls, *results[0])
+
+    @classmethod
     def update(cls, clause, **kwargs):
         set_list = []
         for k, v in kwargs.items():
