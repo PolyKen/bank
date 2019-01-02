@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    <script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/fabric.min.js"></script>
+    <script type="text/javascript" src="../static/js/db.js"></script>
+    <script type="text/javascript" src="../static/js/main.js"></script>
+</head>
+<body>
+<div class="navbar navbar-static-top navbar-inverse">
+    <a class="navbar-brand" href="#">虚拟银行系统</a>
+    <a class="navbar-brand pull-right" href="#">登录 </a>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <p>测试多用户</p>
+            </div>
+            <div class="row">
+                <input type="radio" id="user-1"> Tom
+                <input type="radio" id="user-2"> Jerry
+                <button type="button" class="btn btn-default" id="read-wish">update</button>
+            </div>
+        </div>
+    </div>
+    <div class="row row1">
+        <div class="col-lg-4">
+            <div class="jumbotron" id="price-panel">
+                <div class="row">
+                    <div class="input-group">
+                        <span class="input-group-addon">出价</span>
+                        <input type="number" class="form-control" id="price">
+                        <span class="input-group-addon">元</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="radio" id="buy" checked="checked"> 买
+                            <input type="radio" id="sell"> 卖
+                        </span>
+                        <input type="number" class="form-control" id="num">
+                        <span class="input-group-addon">手</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-default" id="confirm">确认</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="jumbotron" id="jumbotron-canv">
+                <canvas id="canv" width="2000"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row row2">
+        <div class="col-lg-3 buy-list">
+            <div class="jumbotron pre-scrollable table-area">
+                <p class="red">买</p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>用户</th>
+                            <th>手</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-3 sell-list">
+            <div class="jumbotron pre-scrollable table-area">
+                <p class="green">卖</p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>用户</th>
+                            <th>手</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="logger col-lg-6">
+            <div class="jumbotron logger-text-area pre-scrollable">
+                <p>> logger</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

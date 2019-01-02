@@ -1,0 +1,57 @@
+.row {
+    margin: 10px 0 10px 0;
+}
+
+.logger-text-area p {
+    font-family: 'Consolas';
+    font-size: 14px;
+}
+
+.logger-text-area {
+    padding: 10px 10px 10px 10px;
+}
+
+.table-area {
+    padding: 5px 5px 5px 5px;
+}
+
+.logger {
+    height: 40px;
+}
+
+.jumbotron {
+    margin: 5px 5px 5px 5px;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.row1 .jumbotron {
+    height: 200px;
+}
+
+#price-panel {
+    padding: 30px;
+}
+
+#jumbotron-canv {
+    padding: 0;
+}
+
+#canv {
+    margin: 0;
+    padding: 0;
+    height: 200px;
+    width: 400px;
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
+}
+
+.yellow {
+    color: #c17810;
+}
