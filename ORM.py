@@ -155,6 +155,7 @@ class Model(dict, metaclass=ModelMetaClass):
         values = {}
         for i in range(len(cls.__fields__)):
             values[cls.__fields__[i]] = results[0][i]
+        print(values)
         return cls(**values)
 
     @classmethod
