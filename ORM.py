@@ -28,6 +28,20 @@ def execute_sql(sql, *args):
         return results
 
 
+def get_head(select_sql):
+    conn = pymysql.connect(host=db_host, user=db_user, passwd=db_password, db="bank")
+    col = None
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(select_sql + ";")
+            col = cursor.description
+    except Exception as e:
+        print(red("failed with error: {}".format(e)))
+    finally:
+        conn.close()
+        return col
+
+
 class Field(object):
     def __init__(self, column_type, max_length, **kwargs):
         self.column_type = column_type
@@ -128,6 +142,12 @@ class Model(dict, metaclass=ModelMetaClass):
             raise KeyError
 
     @classmethod
+    def head(cls):
+        heads = get_head(cls.__select__.replace('?', '*'))
+        print(heads)
+        return heads
+
+    @classmethod
     def select(cls, column_list=None, clause=None):
         if column_list:
             if type(column_list) is str:
@@ -150,6 +170,7 @@ class Model(dict, metaclass=ModelMetaClass):
             pk_list.append("{}={}".format(k, v))
 
         results = cls.select(clause="WHERE {}".format(join(pk_list)))
+        heads = cls.head()
 
         assert len(cls.__fields__) == len(results[0])
         values = {}
