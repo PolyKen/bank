@@ -103,13 +103,15 @@ class FinancialProduct(Model):
 
 
 if __name__ == '__main__':
-    user = User(_id=19002, _name='Marina Abraham', _tel=35012251, _address='2204 Newton Rd.',
-                _city='San Francisco', _mobile=90348201998, _email='marina.abraham@hotmail.com')
-    credit_card_user = CreditCardUser(_id=19002, _level=1, _contact_person='George Abraham',
-                                      _contact_tel=23545365677, _job='Associate Professor',
-                                      _income=80000)
-    deposit = Deposit(_id=12, _account_id=10010, _currency_type=3, _deposit_type=2,
-                      _quantity=24000, _start_time=None)
-    user.insert()
-    credit_card_user.insert()
-    deposit.insert()
+    # user = User(_id=19002, _name='Marina Abraham', _tel=35012251, _address='2204 Newton Rd.',
+    #             _city='San Francisco', _mobile=90348201998, _email='marina.abraham@hotmail.com')
+    # credit_card_user = CreditCardUser(_id=19002, _level=1, _contact_person='George Abraham',
+    #                                   _contact_tel=23545365677, _job='Associate Professor',
+    #                                   _income=80000)
+    # deposit = Deposit(_id=12, _account_id=10010, _currency_type=3, _deposit_type=2,
+    #                   _quantity=24000, _start_time=None)
+    # user.insert()
+    # credit_card_user.insert()
+    # deposit.insert()
+
+    User.select(["id", "name"], "where city=\"San Francisco\"")

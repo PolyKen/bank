@@ -88,6 +88,7 @@ class ModelMetaClass(type):
         attrs['__fields__'] = fields
         attrs['__table__'] = attrs.get('__table__') or name
 
+        attrs['__select__'] = 'SELECT ? FROM {}'.format(attrs['__table__'])
         attrs['__insert__'] = 'INSERT INTO {} (?) VALUES (?)'.format(attrs['__table__'])
 
         return type.__new__(mcs, name, bases, attrs)
@@ -117,6 +118,20 @@ class Model(dict, metaclass=ModelMetaClass):
             for key in self:
                 print("{}: {}".format(key, self[key]))
             raise KeyError
+
+    @classmethod
+    def select(cls, column_list=None, clause=None):
+        if column_list:
+            column_list = join(column_list)
+        else:
+            column_list = "*"
+
+        if clause:
+            select_sql = cls.__select__ + " " + clause
+        else:
+            select_sql = cls.__select__
+
+        execute_sql(select_sql, column_list)
 
     def insert(self):
         valid_fields = [f for f in self.__fields__ if self.get_value(f)]
