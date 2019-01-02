@@ -46,8 +46,15 @@ class Account(Model):
 
     def withdraw(self, deposit_id, quantity):
         results = Deposit.select(["quantity", "account_id"], "where id={}".format(deposit_id))
-        print("account id: {}".format(self.id))
-        print("results: {}".format(results))
+        _quantity, _account_id = results[0][0], results[0][1]
+
+        if _account_id != self.id:
+            raise Exception("deposit {} doesn't belong to {}".format(deposit_id, self.id))
+
+        if _quantity < quantity:
+            raise Exception("deposit {} not enough".format(deposit_id))
+        else:
+            Deposit.update("where id={}".format(deposit_id), quantity=_quantity-quantity)
 
 
 class Deposit(Model):

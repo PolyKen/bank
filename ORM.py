@@ -97,6 +97,7 @@ class ModelMetaClass(type):
 
         attrs['__select__'] = 'SELECT ? FROM {}'.format(attrs['__table__'])
         attrs['__insert__'] = 'INSERT INTO {} (?) VALUES (?)'.format(attrs['__table__'])
+        attrs['__update__'] = 'UPDATE {} SET ?'.format(attrs['__table__'])
 
         return type.__new__(mcs, name, bases, attrs)
 
@@ -140,7 +141,20 @@ class Model(dict, metaclass=ModelMetaClass):
         else:
             select_sql = cls.__select__
 
-        execute_sql(select_sql, column_list)
+        return execute_sql(select_sql, column_list)
+
+    @classmethod
+    def update(cls, clause, **kwargs):
+        set_list = []
+        for k, v in kwargs.items():
+            set_list.append("{}={}".format(k, v))
+
+        if clause:
+            update_sql = cls.__update__ + " " + clause
+        else:
+            update_sql = cls.__update__
+
+        execute_sql(update_sql, join(set_list))
 
     def insert(self):
         valid_fields = [f for f in self.__fields__ if self.get_value(f)]
