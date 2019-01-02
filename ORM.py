@@ -58,6 +58,16 @@ class BigIntegerField(Field):
                                               max_length=max_length, kwargs=kwargs)
 
 
+class FloatField(Field):
+    def __init__(self, **kwargs):
+        super(FloatField, self).__init__(column_type='float', max_length=None, kwargs=kwargs)
+
+
+class TimestampField(Field):
+    def __init__(self, **kwargs):
+        super(TimestampField, self).__init__(column_type='timestamp', max_length=None, kwargs=kwargs)
+
+
 class ModelMetaClass(type):
     def __new__(mcs, name, bases, attrs):
         print('using ModelMetaClass')
@@ -104,7 +114,8 @@ class Model(dict, metaclass=ModelMetaClass):
             return self[field]
 
     def insert(self):
-        values = [self.get_value(f) for f in self.__fields__]
+        valid_fields = [f for f in self.__fields__ if f]
+        values = [self.get_value(f) for f in valid_fields]
         execute_sql(self.__insert__, join(self.__fields__), join(values))
 
 
