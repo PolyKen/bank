@@ -80,7 +80,7 @@ class Deposit(Model):
         time_delta = "(select timestampdiff(day, \"{}\", now()))".format(self.start_time)
         sql = "SELECT calc_interest({}, {}, {})".format(quantity, self.deposit_type, time_delta)
         res = execute_sql(sql)
-        return float(res[0])
+        return float(res[0][0])
 
 
 class Overdraft(Model):
