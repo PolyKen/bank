@@ -97,7 +97,7 @@ class Model(dict, metaclass=ModelMetaClass):
 
     def get_value(self, field):
         if self.__mappings__[field].__class__ == StringField:
-            return '`{}`'.format(self[field])
+            return '\"{}\"'.format(self[field])
         else:
             return self[field]
 
