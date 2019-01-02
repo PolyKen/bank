@@ -147,6 +147,5 @@ if __name__ == '__main__':
     # a.deposit(quantity=1000, currency_type=1, deposit_type=1)
     # a.withdraw(deposit_id=13, quantity=1000)
 
-    d = Deposit.query(id=13)
-    interest = d.calc_interest(10000)
-    print("interest = {}".format(interest))
+    Deposit.query(id=13).calc_interest(100000)
+    Deposit.query(id=17).calc_interest(10000)
