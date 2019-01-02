@@ -16,6 +16,8 @@ def execute_sql(sql, *args):
             results = cursor.fetchall()
             for row in results:
                 print(row)
+            conn.commit()
+            print('success')
     except Exception as e:
         print(e)
     finally:
