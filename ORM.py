@@ -108,10 +108,15 @@ class Model(dict, metaclass=ModelMetaClass):
         self[key] = value
 
     def get_value(self, field):
-        if self.__mappings__[field].__class__ == StringField:
-            return '\"{}\"'.format(self[field])
-        else:
-            return self[field]
+        try:
+            if self.__mappings__[field].__class__ == StringField:
+                return '\"{}\"'.format(self[field])
+            else:
+                return self[field]
+        except KeyError:
+            for key in self:
+                print("{}: {}".format(key, self[key]))
+            raise KeyError
 
     def insert(self):
         valid_fields = [f for f in self.__fields__ if f]
