@@ -74,6 +74,9 @@ class Deposit(Model):
     def calc_interest(self, quantity):
         if self.quantity < quantity:
             raise Exception("deposit {} not enough".format(self.id))
+
+        assert self.start_time, Exception("invalid start_time")
+
         time_delta = "now()-{}".format(self.start_time)
         sql = "SELECT calc_interest({}, {}, {})".format(quantity, self.deposit_type, time_delta)
         res = execute_sql(sql)
@@ -144,9 +147,9 @@ if __name__ == '__main__':
     a.deposit(quantity=1000, currency_type=1, deposit_type=1)
     a.withdraw(deposit_id=13, quantity=1000)
 
-    d = Deposit(id=1, account_id=10010, currency_type=2, deposit_type=2, quantity=10800, start_time=None)
-    d.calc_interest(5000)
-    d.calc_interest(20000)
+    # d = Deposit(id=1, account_id=10010, currency_type=2, deposit_type=2, quantity=10800, start_time=None)
+    # d.calc_interest(5000)
+    # d.calc_interest(20000)
 
-    d2 = Deposit.query(id=13)
-    d2.calc_interest(100)
+    d = Deposit.query(id=13)
+    d.calc_interest(10000)
