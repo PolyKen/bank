@@ -144,7 +144,6 @@ class Model(dict, metaclass=ModelMetaClass):
     @classmethod
     def head(cls):
         heads = get_head(cls.__select__.replace('?', '*'))
-        print(heads)
         return heads
 
     @classmethod
@@ -171,11 +170,12 @@ class Model(dict, metaclass=ModelMetaClass):
 
         results = cls.select(clause="WHERE {}".format(join(pk_list)))
         heads = cls.head()
+        fields_name = [field[0] for field in heads]
 
-        assert len(cls.__fields__) == len(results[0])
+        assert len(fields_name) == len(cls.__fields__)
         values = {}
-        for i in range(len(cls.__fields__)):
-            values[cls.__fields__[i]] = results[0][i]
+        for i in range(len(fields_name)):
+            values[fields_name[i]] = results[0][i]
         print(values)
         return cls(**values)
 
