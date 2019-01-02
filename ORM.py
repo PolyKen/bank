@@ -1,10 +1,6 @@
 from functools import reduce
 import pymysql
-
-
-db_user = ""
-db_password = ""
-db_host = "localhost"
+from credentials import db_host, db_user, db_password
 
 
 def join(attrs, pattern=','):
