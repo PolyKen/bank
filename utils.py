@@ -20,7 +20,6 @@ def separate(func):
     def wrapper(*args, **kwargs):
         print(yellow("------------------------------------------"))
         res = func(*args, **kwargs)
-        print(yellow("------------------------------------------"))
         print()
         return res
     return wrapper

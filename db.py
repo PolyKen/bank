@@ -144,12 +144,8 @@ if __name__ == '__main__':
 
     User.select(["id", "name"])
     a = Account(id=10026, branch_id=2001, user_id=15003)
-    a.deposit(quantity=1000, currency_type=1, deposit_type=1)
-    a.withdraw(deposit_id=13, quantity=1000)
-
-    # d = Deposit(id=1, account_id=10010, currency_type=2, deposit_type=2, quantity=10800, start_time=None)
-    # d.calc_interest(5000)
-    # d.calc_interest(20000)
+    # a.deposit(quantity=1000, currency_type=1, deposit_type=1)
+    # a.withdraw(deposit_id=13, quantity=1000)
 
     d = Deposit.query(id=13)
     interest = d.calc_interest(10000)

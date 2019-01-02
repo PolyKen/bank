@@ -176,7 +176,6 @@ class Model(dict, metaclass=ModelMetaClass):
         values = {}
         for i in range(len(fields_name)):
             values[fields_name[i]] = results[0][i]
-        print(values)
         return cls(**values)
 
     @classmethod
