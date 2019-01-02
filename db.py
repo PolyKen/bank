@@ -152,4 +152,5 @@ if __name__ == '__main__':
     # d.calc_interest(20000)
 
     d = Deposit.query(id=13)
-    d.calc_interest(10000)
+    interest = d.calc_interest(10000)
+    print("interest = {}".format(interest))
