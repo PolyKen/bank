@@ -1,6 +1,7 @@
 from functools import reduce
 import pymysql
 from credentials import db_host, db_user, db_password
+from utils import *
 
 
 def join(attrs, pattern=','):
@@ -8,7 +9,7 @@ def join(attrs, pattern=','):
 
 
 def execute_sql(sql, *args):
-    print("SQL: {};".format(sql.replace('?', '{}').format(*args)))
+    print(yellow("Execute SQL: {};".format(sql.replace('?', '{}').format(*args))))
     conn = pymysql.connect(host=db_host, user=db_user, passwd=db_password, db="bank")
     try:
         with conn.cursor() as cursor:
@@ -17,9 +18,9 @@ def execute_sql(sql, *args):
             for row in results:
                 print(row)
             conn.commit()
-            print('success')
+            print(green('success'))
     except Exception as e:
-        print(e)
+        print(red(e))
     finally:
         conn.close()
     return 0
@@ -71,18 +72,22 @@ class TimestampField(Field):
 class ModelMetaClass(type):
     def __new__(mcs, name, bases, attrs):
         print('using ModelMetaClass')
-        print(name, attrs)
+        print("initializing {}".format(name))
         if name == 'Model':
+            print()
             return type.__new__(mcs, name, bases, attrs)
 
         mappings = dict()
         fields = []
         for k, v in attrs.items():
             if isinstance(v, Field):
+                print("mapping: {} --> {}".format(k, v))
                 mappings[k] = v
                 fields.append(k)
         for k in mappings.keys():
             attrs.pop(k)
+
+        print()
 
         attrs['__mappings__'] = mappings
         attrs['__fields__'] = fields

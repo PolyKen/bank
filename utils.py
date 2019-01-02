@@ -10,6 +10,12 @@ def colorize(string, color):
     return colored
 
 
+red = lambda s: colorize(s, "red")
+yellow = lambda s: colorize(s, "yellow")
+green = lambda s: colorize(s, "green")
+blue = lambda s: colorize(s, "blue")
+
+
 def async_run_tasks(coro_func_list, para_list):
     loop = asyncio.get_event_loop()
     tasks = []
