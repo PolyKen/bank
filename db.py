@@ -46,8 +46,8 @@ class Account(Model):
 
     def withdraw(self, deposit_id, quantity):
         results = Deposit.select(["quantity", "account_id"], "where id={}".format(deposit_id))
-        print(self.id)
-        print(results)
+        print("account id: {}".format(self.id))
+        print("results: {}".format(results))
 
 
 class Deposit(Model):
@@ -125,7 +125,6 @@ if __name__ == '__main__':
     # deposit.insert()
 
     User.select(["id", "name"])
-    account = Account(_id=None, _branch_id=2001, _user_id=15003)
-    account.insert()
+    account = Account(_id=10026, _branch_id=2001, _user_id=15003)
     account.deposit(quantity=1000, currency_type=1, deposit_type=1)
     account.withdraw(deposit_id=100, quantity=1000)

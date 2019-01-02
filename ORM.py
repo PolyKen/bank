@@ -24,6 +24,7 @@ def execute_sql(sql, *args):
         print(red(e))
     finally:
         conn.close()
+        print(yellow("-----------------------------"))
         return results
 
 
