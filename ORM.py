@@ -121,7 +121,7 @@ class Model(dict, metaclass=ModelMetaClass):
     def insert(self):
         valid_fields = [f for f in self.__fields__ if self.get_value(f)]
         values = [self.get_value(f) for f in valid_fields]
-        execute_sql(self.__insert__, join(self.__fields__), join(values))
+        execute_sql(self.__insert__, join(valid_fields), join(values))
 
 
 if __name__ == '__main__':
