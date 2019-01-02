@@ -8,11 +8,11 @@ def join(attrs, pattern=','):
 
 
 def execute_sql(sql, *args):
-    print("SQL: {}".format(sql.replace('?', '{}').format(*args)))
+    print("SQL: {};".format(sql.replace('?', '{}').format(*args)))
     conn = pymysql.connect(host=db_host, user=db_user, passwd=db_password, db="bank")
     try:
         with conn.cursor() as cursor:
-            cursor.execute(sql.replace('?', '{}').format(*args))
+            cursor.execute(sql.replace('?', '{}').format(*args) + ";")
             results = cursor.fetchall()
             for row in results:
                 print(row)
