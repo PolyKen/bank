@@ -1,6 +1,5 @@
 from ORM import *
 
-
 NotFound = Error("not found")
 NotMatch = Error("not match")
 NotEnough = Error("not enough")
@@ -112,6 +111,25 @@ class Account(Model):
                     self.withdraw(deposit_id=deposit_id, quantity=quantity)
                     FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()
 
+    @log
+    def exchange_currency(self, deposit_id, new_currency_type, new_currency_quantity):
+        d = Deposit.query(id=deposit_id)
+        if d.account_id != self.id:
+            NotMatch.print()
+            return
+
+        old_currency_type = d.currency_type
+        old_currency_rate = Currency.query(id=old_currency_type).exchange_rate
+        new_currency_rate = Currency.query(id=new_currency_type).exchange_rate
+
+        if d.get_balance() * old_currency_rate < new_currency_quantity * new_currency_rate:
+            NotEnough.print()
+            return
+
+        self.withdraw(deposit_id=deposit_id, quantity=new_currency_quantity * new_currency_rate / old_currency_rate)
+        Deposit(id=None, quantity=new_currency_quantity, deposit_type=1, currency_type=new_currency_type,
+                account_id=self.id, start_time=None).insert()
+
 
 class Deposit(Model):
     __table__ = 'deposit'
@@ -211,4 +229,8 @@ class FPTransaction(Model):
 
 
 if __name__ == '__main__':
-    Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
+    # test withdraw
+    # Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
+
+    # test buy financial products
+    Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
