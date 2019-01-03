@@ -71,8 +71,8 @@ class Account(Model):
 
     @log
     def buy_financial_product(self, fp_id, quantity):
-        results = FinancialProduct.query(id=fp_id)
-        if len(results) == 0:
+        fp = FinancialProduct.query(id=fp_id)
+        if fp is None:
             error("financial products with id {} not found".format(fp_id))
         else:
             FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()

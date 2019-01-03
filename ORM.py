@@ -187,7 +187,10 @@ class Model(dict, metaclass=ModelMetaClass):
             pk_list.append("{}={}".format(k, v))
 
         results = cls.select(clause="WHERE {}".format(join(pk_list)))
-        return results[0]
+        if len(results) > 0:
+            return results[0]
+        else:
+            return None
 
     @classmethod
     def update(cls, clause, **kwargs):
