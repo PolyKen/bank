@@ -207,7 +207,7 @@ class Model(dict, metaclass=ModelMetaClass):
         execute_sql(update_sql, join(set_list))
 
     def insert(self):
-        valid_fields = [f for f in self.__fields__ if self.get_value(f)]
+        valid_fields = [f for f in self.__fields__ if self.get_value(f) is not None]
         values = [self.get_value(f) for f in valid_fields]
         execute_sql(self.__insert__, join(valid_fields), join(values))
 
