@@ -29,6 +29,13 @@ def separate(func):
     return wrapper
 
 
+def log(func):
+    def wrapper(*args, **kwargs):
+        print(blue("> calling {}".format(func.__name__)))
+        return func(*args, **kwargs)
+    return wrapper
+
+
 def async_run_tasks(coro_func_list, para_list):
     loop = asyncio.get_event_loop()
     tasks = []

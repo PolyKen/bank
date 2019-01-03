@@ -39,11 +39,13 @@ class Account(Model):
     def __init__(self, id, branch_id, user_id):
         super(Account, self).__init__(id=id, branch_id=branch_id, user_id=user_id)
 
+    @log
     def deposit(self, quantity, deposit_type, currency_type):
         deposit = Deposit(id=None, quantity=quantity, deposit_type=deposit_type,
                           currency_type=currency_type, account_id=self.id, start_time=None)
         deposit.insert()
 
+    @log
     def withdraw(self, deposit_id, quantity):
         results = Deposit.select(["quantity", "account_id"], "where id={}".format(deposit_id))
         _quantity, _account_id = results[0]["quantity"], results[0]["account_id"]
@@ -73,6 +75,7 @@ class Deposit(Model):
                                       currency_type=currency_type, account_id=account_id,
                                       start_time=start_time)
 
+    @log
     def calc_interest(self, quantity):
         if self.quantity < quantity:
             error("deposit {} not enough".format(self.id))
