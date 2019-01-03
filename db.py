@@ -94,13 +94,14 @@ class Account(Model):
             NotFound.print()
         else:
             d = Deposit.query(id=deposit_id)
-            if d["account_id"] != self.id:
+            if d.account_id != self.id:
                 NotMatch.print()
             else:
-                if d.get_balance() < quantity:
+                c = Currency.query(id=d.currency_type)
+                if d.get_balance() * c.exchange_rate < quantity:
                     NotEnough.print()
                 else:
-                    self.withdraw(deposit_id=deposit_id, quantity=quantity)
+                    self.withdraw(deposit_id=deposit_id, quantity=quantity / c.exchange_rate)
                     FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity,
                                   start_time=None).insert()
 
@@ -225,7 +226,7 @@ if __name__ == '__main__':
     # Account.query(id=10007).withdraw(deposit_id=18, quantity=5000)
 
     # test buy financial products
-    # Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
+    Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
 
     # test exchange currency
-    Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
+    # Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
