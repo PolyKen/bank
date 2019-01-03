@@ -109,7 +109,8 @@ class Account(Model):
                     NotEnough.print()
                 else:
                     self.withdraw(deposit_id=deposit_id, quantity=quantity)
-                    FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()
+                    FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity,
+                                  start_time=None).insert()
 
     @log
     def exchange_currency(self, deposit_id, new_currency_type, new_currency_quantity):
@@ -223,9 +224,11 @@ class FPTransaction(Model):
     account_id = IntegerField(11)
     type_id = IntegerField(11)
     quantity = FloatField()
+    start_time = TimestampField()
 
-    def __init__(self, id, account_id, type_id, quantity):
-        super(FPTransaction, self).__init__(id=id, account_id=account_id, type_id=type_id, quantity=quantity)
+    def __init__(self, id, account_id, type_id, quantity, start_time):
+        super(FPTransaction, self).__init__(id=id, account_id=account_id, type_id=type_id,
+                                            quantity=quantity, start_time=start_time)
 
 
 if __name__ == '__main__':
@@ -234,3 +237,6 @@ if __name__ == '__main__':
 
     # test buy financial products
     Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
+
+    # test exchange currency
+    Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
