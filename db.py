@@ -59,7 +59,7 @@ class Account(Model):
             error("deposit {} not enough, balance: {}, withdraw: {}".format(deposit_id, balance, quantity))
             return
 
-        interest = d.calc_interest(quantity)
+        interest = d.calc_interest(min(quantity, _quantity))
 
         if _quantity > quantity:
             Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
