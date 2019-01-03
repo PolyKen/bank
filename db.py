@@ -147,10 +147,11 @@ if __name__ == '__main__':
     # credit_card_user.insert()
     # deposit.insert()
 
-    User.select(["id", "name"])
+    obj_list = User.select(["id", "name"])
+    for obj in obj_list:
+        print(obj)
     a = Account(id=10026, branch_id=2001, user_id=15003)
-    # a.deposit(quantity=1000, currency_type=1, deposit_type=1)
-    # a.withdraw(deposit_id=13, quantity=1000)
+    a.withdraw(deposit_id=13, quantity=1000)
 
     Deposit.query(id=13).calc_interest(100000)
     Deposit.query(id=17).calc_interest(10000)
