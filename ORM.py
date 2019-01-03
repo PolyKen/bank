@@ -164,7 +164,7 @@ class Model(dict, metaclass=ModelMetaClass):
             heads = cls.head()
             fields_name = [field[0] for field in heads]
         else:
-            fields_name = column_list
+            fields_name = column_list.split(',')
 
         def construct_obj(fields, values):
             assert len(fields) == len(values), Exception(fields, values)
