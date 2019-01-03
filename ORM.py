@@ -160,9 +160,10 @@ class Model(dict, metaclass=ModelMetaClass):
         else:
             select_sql = cls.__select__
 
+        heads = cls.head()
+        all_fields_name = [field[0] for field in heads]
         if column_list == "*":
-            heads = cls.head()
-            fields_name = [field[0] for field in heads]
+            fields_name = all_fields_name
         else:
             fields_name = column_list.split(',')
 
@@ -171,7 +172,10 @@ class Model(dict, metaclass=ModelMetaClass):
             d = {}
             for i in range(len(fields)):
                 d[fields[i]] = values[i]
-            return cls(**d)
+            if len(fields) == len(all_fields_name):
+                return cls(**d)
+            else:
+                return d
 
         results = execute_sql(select_sql, column_list)
         obj_list = list(map(lambda v: construct_obj(fields_name, v), results))
