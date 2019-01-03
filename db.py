@@ -63,15 +63,18 @@ class Account(Model):
 
         if _quantity > quantity:
             Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
-            Deposit(id=None, quantity=interest, account_id=self.id, deposit_type=d.deposit_type,
-                    currency_type=d.currency_type, start_time=None).insert()
+            if interest > 0:
+                Deposit(id=None, quantity=interest, account_id=self.id, deposit_type=d.deposit_type,
+                        currency_type=d.currency_type, start_time=None).insert()
         elif _quantity < quantity:
             Deposit.update("where id={}".format(deposit_id), quantity=0)
-            Deposit(id=None, quantity=interest - (quantity - _quantity), account_id=self.id,
-                    deposit_type=d.deposit_type, currency_type=d.currency_type, start_time=None).insert()
+            if interest > 0:
+                Deposit(id=None, quantity=interest - (quantity - _quantity), account_id=self.id,
+                        deposit_type=d.deposit_type, currency_type=d.currency_type, start_time=None).insert()
         else:
             Deposit.update("where id={}".format(deposit_id), quantity=0)
 
+        print(blue(">> withdraw {}".format(quantity)))
         return quantity
 
     @log
@@ -206,3 +209,4 @@ if __name__ == '__main__':
     # Deposit.query(id=17).calc_interest(10000)
 
     Account.query(id=10026).withdraw(deposit_id=13, quantity=1000)
+    Account.query(id=10026).withdraw(deposit_id=17, quantity=60100)
