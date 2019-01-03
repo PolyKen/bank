@@ -70,12 +70,22 @@ class Account(Model):
                       account_id=self.id, start_time=None).insert()
 
     @log
-    def buy_financial_product(self, fp_id, quantity):
+    def buy_financial_product(self, deposit_id, fp_id, quantity):
         fp = FinancialProduct.query(id=fp_id)
         if fp is None:
             error("financial products with id {} not found".format(fp_id))
         else:
-            FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()
+            d = Deposit.query(id=deposit_id)
+            if d["account_id"] != self.id:
+                error("deposit with id {} doesn't belong to account {}".format(deposit_id, self.id))
+                return
+            else:
+                if d["quantity"] < quantity:
+                    error("deposit with id {} not enough".format(deposit_id))
+                else:
+                    Deposit.update(clause="where id={}".format(deposit_id),
+                                   quantity=float(d["quantity"]) - float(quantity))
+                    FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()
 
 
 class Deposit(Model):
@@ -179,11 +189,6 @@ if __name__ == '__main__':
     # deposit.insert()
 
     obj_list = User.select(["id", "name"])
-    for obj in obj_list:
-        print(obj)
-    a = Account(id=10026, branch_id=2001, user_id=15003)
-    # a.withdraw(deposit_id=13, quantity=1000)
-    a.overdraft(quantity=10000, currency_type=2)
-    a.buy_financial_product(fp_id=1, quantity=10000)
-    Deposit.query(id=13).calc_interest(100000)
-    Deposit.query(id=17).calc_interest(10000)
+    Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
+    Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=1, quantity=100)
+    # Deposit.query(id=17).calc_interest(10000)
