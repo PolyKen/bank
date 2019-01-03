@@ -190,5 +190,5 @@ if __name__ == '__main__':
 
     # obj_list = User.select(["id", "name"])
     Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
-    Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=1, quantity=100)
+    Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=995, quantity=100)
     # Deposit.query(id=17).calc_interest(10000)

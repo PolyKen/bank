@@ -181,6 +181,7 @@ class Model(dict, metaclass=ModelMetaClass):
         return obj_list
 
     @classmethod
+    @log
     def query(cls, **kwargs):
         pk_list = []
         for k, v in kwargs.items():
