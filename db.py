@@ -16,10 +16,11 @@ class User(Model):
     city = StringField(20)
     mobile = BigIntegerField(30)
     email = StringField(30)
+    birthday = DateField()
 
-    def __init__(self, id, name, tel, address, city, mobile, email):
+    def __init__(self, id, name, tel, address, city, mobile, email, birthday):
         super(User, self).__init__(id=id, name=name, tel=tel, address=address,
-                                   city=city, mobile=mobile, email=email)
+                                   city=city, mobile=mobile, email=email, birthday=birthday)
 
 
 class CreditCardUser(Model):

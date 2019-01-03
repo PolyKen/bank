@@ -84,6 +84,11 @@ class TimestampField(Field):
         super(TimestampField, self).__init__(column_type='timestamp', max_length=None, kwargs=kwargs)
 
 
+class DateField(Field):
+    def __init__(self, **kwargs):
+        super(DateField, self).__init__(column_type='date', max_length=None, kwargs=kwargs)
+
+
 class ModelMetaClass(type):
     def __new__(mcs, name, bases, attrs):
         print('using ModelMetaClass')
