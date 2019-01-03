@@ -8,7 +8,6 @@ def join(attrs, pattern=','):
     return reduce(lambda x, y: '{}{}{}'.format(x, pattern, y), attrs)
 
 
-@separate
 def execute_sql(sql, *args):
     print(yellow("Execute SQL: {};".format(sql.replace('?', '{}').format(*args))))
     conn = pymysql.connect(host=db_host, user=db_user, passwd=db_password, db="bank")
@@ -20,9 +19,9 @@ def execute_sql(sql, *args):
             for row in results:
                 print(row)
             conn.commit()
-            print(green('success with {} result(s)'.format(len(results))))
+            print(green('SQL success with {} result(s)'.format(len(results))))
     except Exception as e:
-        print(red("failed with error: {}".format(e)))
+        print(red("SQL failed with error: {}".format(e)))
     finally:
         conn.close()
         return results

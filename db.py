@@ -60,6 +60,23 @@ class Account(Model):
 
         Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
 
+    @log
+    def overdraft(self, quantity, currency_type=1):
+        results = CreditCardUser.select(clause="where id={}".format(self.user_id))
+        if len(results) == 0:
+            error("non credit card user is not allowed to overdraft")
+        else:
+            Overdraft(id=None, quantity=quantity, currency_type=currency_type,
+                      account_id=self.id, start_time=None).insert()
+
+    @log
+    def buy_financial_product(self, fp_id, quantity):
+        results = FinancialProduct.query(id=fp_id)
+        if len(results) == 0:
+            error("financial products with id {} not found".format(fp_id))
+        else:
+            FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()
+
 
 class Deposit(Model):
     __table__ = 'deposit'
@@ -138,6 +155,17 @@ class FinancialProduct(Model):
                                                interest_rate=interest_rate, guaranteed=guaranteed)
 
 
+class FPTransaction(Model):
+    __table__ = 'fp_transaction'
+    id = IntegerField(11)
+    account_id = IntegerField(11)
+    type_id = IntegerField(11)
+    quantity = FloatField()
+
+    def __init__(self, id, account_id, type_id, quantity):
+        super(FPTransaction, self).__init__(id=id, account_id=account_id, type_id=type_id, quantity=quantity)
+
+
 if __name__ == '__main__':
     # user = User(_id=19002, _name='Marina Abraham', _tel=35012251, _address='2204 Newton Rd.',
     #             _city='San Francisco', _mobile=90348201998, _email='marina.abraham@hotmail.com')
@@ -154,7 +182,8 @@ if __name__ == '__main__':
     for obj in obj_list:
         print(obj)
     a = Account(id=10026, branch_id=2001, user_id=15003)
-    a.withdraw(deposit_id=13, quantity=1000)
-
+    # a.withdraw(deposit_id=13, quantity=1000)
+    a.overdraft(quantity=10000, currency_type=2)
+    a.buy_financial_product(fp_id=1, quantity=10000)
     Deposit.query(id=13).calc_interest(100000)
     Deposit.query(id=17).calc_interest(10000)

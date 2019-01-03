@@ -32,7 +32,9 @@ def separate(func):
 def log(func):
     def wrapper(*args, **kwargs):
         print(blue("> calling {}".format(func.__name__)))
-        return func(*args, **kwargs)
+        res = func(*args, **kwargs)
+        print()
+        return res
     return wrapper
 
 
