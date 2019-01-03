@@ -72,21 +72,6 @@ class Account(Model):
             Deposit(id=None, quantity=leftover, account_id=self.id, deposit_type=d.deposit_type,
                     currency_type=d.currency_type, start_time=None).insert()
 
-        if d.quantity > quantity:
-            Deposit.update("where id={}".format(deposit_id), quantity=d.quantity - quantity)
-            if interest > 0:
-                Deposit(id=None, quantity=interest, account_id=self.id, deposit_type=d.deposit_type,
-                        currency_type=d.currency_type, start_time=None).insert()
-        elif d.quantity < quantity:
-            Deposit.update("where id={}".format(deposit_id), quantity=0)
-            leftover = interest - (quantity - d.quantity)
-            assert leftover >= 0
-            if leftover > 0:
-                Deposit(id=None, quantity=leftover, account_id=self.id,
-                        deposit_type=d.deposit_type, currency_type=d.currency_type, start_time=None).insert()
-        else:
-            Deposit.update("where id={}".format(deposit_id), quantity=0)
-
         name = Currency.query(id=d.currency_type).name
         print(blue(">> withdraw {} {}".format(name, quantity)))
         return quantity
@@ -235,9 +220,10 @@ class FPTransaction(Model):
 if __name__ == '__main__':
     # test withdraw
     Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
+    Account.query(id=10007).withdraw(deposit_id=18, quantity=5000)
 
     # test buy financial products
-    Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
+    # Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
 
     # test exchange currency
-    Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
+    # Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
