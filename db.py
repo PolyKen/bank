@@ -67,12 +67,12 @@ class Account(Model):
             NotEnough.print()
             return
 
-        Deposit.update("where id={}".format(deposit_id), quantity=0)
         leftover = balance - quantity
         assert leftover >= 0
         if leftover > 0:
-            Deposit(id=None, quantity=leftover, account_id=self.id, deposit_type=d.deposit_type,
-                    currency_type=d.currency_type, start_time=None).insert()
+            Deposit.update("where id={}".format(deposit_id), quantity=leftover)
+        else:
+            Deposit.delete("where id={}".format(deposit_id))
 
         name = Currency.query(id=d.currency_type).name
         print(blue(">> withdraw {} {}".format(name, quantity)))

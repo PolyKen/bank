@@ -116,6 +116,7 @@ class ModelMetaClass(type):
         attrs['__select__'] = 'SELECT ? FROM {}'.format(attrs['__table__'])
         attrs['__insert__'] = 'INSERT INTO {} (?) VALUES (?)'.format(attrs['__table__'])
         attrs['__update__'] = 'UPDATE {} SET ?'.format(attrs['__table__'])
+        attrs['__delete__'] = 'DELETE FROM {}'.format(attrs['__table__'])
 
         return type.__new__(mcs, name, bases, attrs)
 
@@ -210,6 +211,11 @@ class Model(dict, metaclass=ModelMetaClass):
             update_sql = cls.__update__
 
         execute_sql(update_sql, join(set_list))
+
+    @classmethod
+    def delete(cls, clause):
+        delete_sql = cls.__delete__ + " " + clause
+        execute_sql(delete_sql)
 
     def insert(self):
         valid_fields = [f for f in self.__fields__ if self.get_value(f) is not None]
