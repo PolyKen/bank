@@ -54,9 +54,8 @@ class Account(Model):
     @log
     def withdraw(self, deposit_id, quantity):
         d = Deposit.query(id=deposit_id)
-        _quantity, _account_id = d["quantity"], d["account_id"]
 
-        if _account_id != self.id:
+        if d.account_id != self.id:
             NotMatch.print()
             return
 
@@ -65,16 +64,22 @@ class Account(Model):
             NotEnough.print()
             return
 
-        interest = d.calc_interest(min(quantity, _quantity))
+        interest = d.calc_interest()
+        Deposit.update("where id={}".format(deposit_id), quantity=0)
+        leftover = balance - quantity
+        assert leftover >= 0
+        if leftover > 0:
+            Deposit(id=None, quantity=leftover, account_id=self.id, deposit_type=d.deposit_type,
+                    currency_type=d.currency_type, start_time=None).insert()
 
-        if _quantity > quantity:
-            Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
+        if d.quantity > quantity:
+            Deposit.update("where id={}".format(deposit_id), quantity=d.quantity - quantity)
             if interest > 0:
                 Deposit(id=None, quantity=interest, account_id=self.id, deposit_type=d.deposit_type,
                         currency_type=d.currency_type, start_time=None).insert()
-        elif _quantity < quantity:
+        elif d.quantity < quantity:
             Deposit.update("where id={}".format(deposit_id), quantity=0)
-            leftover = interest - (quantity - _quantity)
+            leftover = interest - (quantity - d.quantity)
             assert leftover >= 0
             if leftover > 0:
                 Deposit(id=None, quantity=leftover, account_id=self.id,
@@ -147,17 +152,13 @@ class Deposit(Model):
                                       start_time=start_time)
 
     @log
-    def calc_interest(self, quantity):
-        if self.quantity < quantity:
-            NotEnough.print()
-            return 0
-
+    def calc_interest(self):
         if self.start_time is None:
             InvalidParameter.print()
             return 0
 
         time_delta = "(select timestampdiff(day, \"{}\", now()))".format(self.start_time)
-        sql = "SELECT calc_interest({}, {}, {})".format(quantity, self.deposit_type, time_delta)
+        sql = "SELECT calc_interest({}, {}, {})".format(self.quantity, self.deposit_type, time_delta)
         res = execute_sql(sql)
         return float(res[0][0])
 
@@ -233,7 +234,7 @@ class FPTransaction(Model):
 
 if __name__ == '__main__':
     # test withdraw
-    # Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
+    Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
 
     # test buy financial products
     Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
