@@ -47,18 +47,32 @@ class Account(Model):
 
     @log
     def withdraw(self, deposit_id, quantity):
-        results = Deposit.select(["quantity", "account_id"], "where id={}".format(deposit_id))
-        _quantity, _account_id = results[0]["quantity"], results[0]["account_id"]
+        d = Deposit.query(id=deposit_id)
+        _quantity, _account_id = d["quantity"], d["account_id"]
 
         if _account_id != self.id:
             error("deposit {} doesn't belong to {}".format(deposit_id, self.id))
             return
 
-        if _quantity < quantity:
+        balance = d.get_balance()
+        if _quantity < balance:
             error("deposit {} not enough".format(deposit_id))
             return
 
-        Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
+        interest = d.calc_interest(quantity)
+
+        if _quantity > quantity:
+            Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
+            Deposit(id=None, quantity=interest, account_id=self.id, deposit_type=d.deposit_type,
+                    currency_type=d.currency_type, start_time=None).insert()
+        elif _quantity < quantity:
+            Deposit.update("where id={}".format(deposit_id), quantity=0)
+            Deposit(id=None, quantity=interest - (quantity - _quantity), account_id=self.id,
+                    deposit_type=d.deposit_type, currency_type=d.currency_type, start_time=None).insert()
+        else:
+            Deposit.update("where id={}".format(deposit_id), quantity=0)
+
+        return quantity
 
     @log
     def overdraft(self, quantity, currency_type=1):
@@ -114,6 +128,15 @@ class Deposit(Model):
 
         time_delta = "(select timestampdiff(day, \"{}\", now()))".format(self.start_time)
         sql = "SELECT calc_interest({}, {}, {})".format(quantity, self.deposit_type, time_delta)
+        res = execute_sql(sql)
+        return float(res[0][0])
+
+    @log
+    def get_balance(self):
+        if self.start_time is None:
+            error("invalid start_time")
+            return 0
+        sql = "SELECT get_balance({})".format(self.id)
         res = execute_sql(sql)
         return float(res[0][0])
 
@@ -192,3 +215,5 @@ if __name__ == '__main__':
     Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
     Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=995, quantity=100)
     # Deposit.query(id=17).calc_interest(10000)
+
+    Account.query(id=10026).withdraw(deposit_id=13, quantity=1000)

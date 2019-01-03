@@ -33,7 +33,7 @@ def log(func):
     def wrapper(*args, **kwargs):
         print(blue("> calling {}".format(func.__name__)))
         res = func(*args, **kwargs)
-        print(blue("> {} called".format(func.__name__)))
+        print(blue("> {} returned".format(func.__name__)))
         print()
         return res
     return wrapper
