@@ -64,7 +64,6 @@ class Account(Model):
             NotEnough.print()
             return
 
-        interest = d.calc_interest()
         Deposit.update("where id={}".format(deposit_id), quantity=0)
         leftover = balance - quantity
         assert leftover >= 0
@@ -219,7 +218,7 @@ class FPTransaction(Model):
 
 if __name__ == '__main__':
     # test withdraw
-    # Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
+    Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
     # Account.query(id=10007).withdraw(deposit_id=18, quantity=5000)
 
     # test buy financial products
