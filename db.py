@@ -55,7 +55,7 @@ class Account(Model):
             return
 
         balance = d.get_balance()
-        if _quantity < balance:
+        if balance < quantity:
             error("deposit {} not enough, balance: {}, withdraw: {}".format(deposit_id, balance, quantity))
             return
 
@@ -68,8 +68,10 @@ class Account(Model):
                         currency_type=d.currency_type, start_time=None).insert()
         elif _quantity < quantity:
             Deposit.update("where id={}".format(deposit_id), quantity=0)
-            if interest > 0:
-                Deposit(id=None, quantity=interest - (quantity - _quantity), account_id=self.id,
+            leftover = interest - (quantity - _quantity)
+            assert leftover >= 0
+            if leftover > 0:
+                Deposit(id=None, quantity=leftover, account_id=self.id,
                         deposit_type=d.deposit_type, currency_type=d.currency_type, start_time=None).insert()
         else:
             Deposit.update("where id={}".format(deposit_id), quantity=0)
