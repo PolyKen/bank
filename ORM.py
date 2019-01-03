@@ -167,7 +167,7 @@ class Model(dict, metaclass=ModelMetaClass):
             fields_name = column_list
 
         def construct_obj(fields, values):
-            assert len(fields) == len(values)
+            assert len(fields) == len(values), Exception(fields, values)
             d = {}
             for i in range(len(fields)):
                 d[fields[i]] = values[i]
