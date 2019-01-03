@@ -219,8 +219,8 @@ class FPTransaction(Model):
 
 if __name__ == '__main__':
     # test withdraw
-    Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
-    Account.query(id=10007).withdraw(deposit_id=18, quantity=5000)
+    # Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
+    # Account.query(id=10007).withdraw(deposit_id=18, quantity=5000)
 
     # test buy financial products
     # Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)

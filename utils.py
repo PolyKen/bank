@@ -17,7 +17,7 @@ blue = lambda s: colorize(s, "blue")
 
 
 class Error(object):
-    def __init__(self, text, color=red):
+    def __init__(self, text, color="red"):
         self.text = text
         self.color = color
 
