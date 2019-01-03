@@ -1,6 +1,13 @@
 from ORM import *
 
 
+NotFound = Error("not found")
+NotMatch = Error("not match")
+NotEnough = Error("not enough")
+InvalidParameter = Error("invalid parameter(s)")
+PermissionDenied = Error("permission denied")
+
+
 class User(Model):
     __table__ = 'users'
     id = IntegerField(11)
@@ -51,12 +58,12 @@ class Account(Model):
         _quantity, _account_id = d["quantity"], d["account_id"]
 
         if _account_id != self.id:
-            error("deposit {} doesn't belong to {}".format(deposit_id, self.id))
+            NotMatch.print()
             return
 
         balance = d.get_balance()
         if balance < quantity:
-            error("deposit {} not enough, balance: {}, withdraw: {}".format(deposit_id, balance, quantity))
+            NotEnough.print()
             return
 
         interest = d.calc_interest(min(quantity, _quantity))
@@ -84,7 +91,7 @@ class Account(Model):
     def overdraft(self, quantity, currency_type=1):
         results = CreditCardUser.select(clause="where id={}".format(self.user_id))
         if len(results) == 0:
-            error("non credit card user is not allowed to overdraft")
+            PermissionDenied.print()
         else:
             Overdraft(id=None, quantity=quantity, currency_type=currency_type,
                       account_id=self.id, start_time=None).insert()
@@ -93,18 +100,16 @@ class Account(Model):
     def buy_financial_product(self, deposit_id, fp_id, quantity):
         fp = FinancialProduct.query(id=fp_id)
         if fp is None:
-            error("financial products with id {} not found".format(fp_id))
+            NotFound.print()
         else:
             d = Deposit.query(id=deposit_id)
             if d["account_id"] != self.id:
-                error("deposit with id {} doesn't belong to account {}".format(deposit_id, self.id))
-                return
+                NotMatch.print()
             else:
-                if d["quantity"] < quantity:
-                    error("deposit with id {} not enough".format(deposit_id))
+                if d.get_balance() < quantity:
+                    NotEnough.print()
                 else:
-                    Deposit.update(clause="where id={}".format(deposit_id),
-                                   quantity=float(d["quantity"]) - float(quantity))
+                    self.withdraw(deposit_id=deposit_id, quantity=quantity)
                     FPTransaction(id=None, account_id=self.id, type_id=fp_id, quantity=quantity).insert()
 
 
@@ -125,11 +130,11 @@ class Deposit(Model):
     @log
     def calc_interest(self, quantity):
         if self.quantity < quantity:
-            error("deposit {} not enough".format(self.id))
+            NotEnough.print()
             return 0
 
         if self.start_time is None:
-            error("invalid start_time")
+            InvalidParameter.print()
             return 0
 
         time_delta = "(select timestampdiff(day, \"{}\", now()))".format(self.start_time)
@@ -140,7 +145,7 @@ class Deposit(Model):
     @log
     def get_balance(self):
         if self.start_time is None:
-            error("invalid start_time")
+            InvalidParameter.print()
             return 0
         sql = "SELECT get_balance({})".format(self.id)
         res = execute_sql(sql)

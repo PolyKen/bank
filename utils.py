@@ -16,8 +16,13 @@ green = lambda s: colorize(s, "green")
 blue = lambda s: colorize(s, "blue")
 
 
-def error(text):
-    print(red("Error: {}".format(text)))
+class Error(object):
+    def __init__(self, text, color=red):
+        self.text = text
+        self.color = color
+
+    def print(self):
+        print(colorize("Error: {}".format(self.text), self.color))
 
 
 def separate(func):
