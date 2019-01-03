@@ -76,7 +76,8 @@ class Account(Model):
         else:
             Deposit.update("where id={}".format(deposit_id), quantity=0)
 
-        print(blue(">> withdraw {}".format(quantity)))
+        name = Currency.query(id=d.currency_type).name
+        print(blue(">> withdraw {} {}".format(name, quantity)))
         return quantity
 
     @log
@@ -205,9 +206,4 @@ class FPTransaction(Model):
 
 
 if __name__ == '__main__':
-    # Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
-    # Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=995, quantity=100)
-    # Deposit.query(id=17).calc_interest(10000)
-
     Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
-    Account.query(id=10026).withdraw(deposit_id=17, quantity=60100)
