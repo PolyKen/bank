@@ -226,4 +226,4 @@ if __name__ == '__main__':
     # Account.query(id=10026).buy_financial_product(fp_id=995, deposit_id=13, quantity=200)
 
     # test exchange currency
-    # Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
+    Account.query(id=10026).exchange_currency(deposit_id=13, new_currency_type=4, new_currency_quantity=10000)
