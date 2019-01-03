@@ -56,7 +56,7 @@ class Account(Model):
 
         balance = d.get_balance()
         if _quantity < balance:
-            error("deposit {} not enough".format(deposit_id))
+            error("deposit {} not enough, balance: {}, withdraw: {}".format(deposit_id, balance, quantity))
             return
 
         interest = d.calc_interest(quantity)
@@ -203,10 +203,9 @@ class FPTransaction(Model):
 
 
 if __name__ == '__main__':
-    # obj_list = User.select(["id", "name"])
-    Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
-    Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=995, quantity=100)
+    # Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
+    # Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=995, quantity=100)
     # Deposit.query(id=17).calc_interest(10000)
 
-    Account.query(id=10026).withdraw(deposit_id=13, quantity=1000)
+    Account.query(id=10026).withdraw(deposit_id=13, quantity=200)
     Account.query(id=10026).withdraw(deposit_id=17, quantity=60100)
