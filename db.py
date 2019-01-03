@@ -128,7 +128,7 @@ class Overdraft(Model):
 
     def __init__(self, id, quantity, currency_type, account_id, start_time):
         super(Overdraft, self).__init__(id=id, quantity=quantity, currency_type=currency_type,
-                                        acccount_id=account_id, start_time=start_time)
+                                        account_id=account_id, start_time=start_time)
 
 
 class InterestRate(Model):
@@ -188,7 +188,7 @@ if __name__ == '__main__':
     # credit_card_user.insert()
     # deposit.insert()
 
-    obj_list = User.select(["id", "name"])
+    # obj_list = User.select(["id", "name"])
     Account.query(id=10002).overdraft(quantity=10000, currency_type=2)
     Account.query(id=10026).buy_financial_product(deposit_id=13, fp_id=1, quantity=100)
     # Deposit.query(id=17).calc_interest(10000)
