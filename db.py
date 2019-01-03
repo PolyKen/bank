@@ -46,15 +46,17 @@ class Account(Model):
 
     def withdraw(self, deposit_id, quantity):
         results = Deposit.select(["quantity", "account_id"], "where id={}".format(deposit_id))
-        _quantity, _account_id = results[0][0], results[0][1]
+        _quantity, _account_id = results[0]["quantity"], results[0]["account_id"]
 
         if _account_id != self.id:
-            raise Exception("deposit {} doesn't belong to {}".format(deposit_id, self.id))
+            error("deposit {} doesn't belong to {}".format(deposit_id, self.id))
+            return
 
         if _quantity < quantity:
-            raise Exception("deposit {} not enough".format(deposit_id))
-        else:
-            Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
+            error("deposit {} not enough".format(deposit_id))
+            return
+
+        Deposit.update("where id={}".format(deposit_id), quantity=_quantity - quantity)
 
 
 class Deposit(Model):
@@ -73,9 +75,12 @@ class Deposit(Model):
 
     def calc_interest(self, quantity):
         if self.quantity < quantity:
-            raise Exception("deposit {} not enough".format(self.id))
+            error("deposit {} not enough".format(self.id))
+            return 0
 
-        assert self.start_time, Exception("invalid start_time")
+        if self.start_time is None:
+            error("invalid start_time")
+            return 0
 
         time_delta = "(select timestampdiff(day, \"{}\", now()))".format(self.start_time)
         sql = "SELECT calc_interest({}, {}, {})".format(quantity, self.deposit_type, time_delta)

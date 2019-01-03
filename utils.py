@@ -16,6 +16,10 @@ green = lambda s: colorize(s, "green")
 blue = lambda s: colorize(s, "blue")
 
 
+def error(text):
+    print(red("Error: {}".format(text)))
+
+
 def separate(func):
     def wrapper(*args, **kwargs):
         print(yellow("------------------------------------------"))

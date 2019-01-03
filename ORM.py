@@ -160,7 +160,22 @@ class Model(dict, metaclass=ModelMetaClass):
         else:
             select_sql = cls.__select__
 
-        return execute_sql(select_sql, column_list)
+        if column_list == "*":
+            heads = cls.head()
+            fields_name = [field[0] for field in heads]
+        else:
+            fields_name = column_list
+
+        def construct_obj(fields, values):
+            assert len(fields) == len(values)
+            d = {}
+            for i in range(len(fields)):
+                d[fields[i]] = values[i]
+            return cls(**d)
+
+        results = execute_sql(select_sql, column_list)
+        obj_list = list(map(lambda v: construct_obj(fields_name, v), results))
+        return obj_list
 
     @classmethod
     def query(cls, **kwargs):
@@ -169,14 +184,7 @@ class Model(dict, metaclass=ModelMetaClass):
             pk_list.append("{}={}".format(k, v))
 
         results = cls.select(clause="WHERE {}".format(join(pk_list)))
-        heads = cls.head()
-        fields_name = [field[0] for field in heads]
-
-        assert len(fields_name) == len(cls.__fields__)
-        values = {}
-        for i in range(len(fields_name)):
-            values[fields_name[i]] = results[0][i]
-        return cls(**values)
+        return results[0]
 
     @classmethod
     def update(cls, clause, **kwargs):
