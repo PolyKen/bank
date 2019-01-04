@@ -10,7 +10,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/table/<table_name>'])
+@app.route('/table/<table_name>')
 def get_table(table_name):
     print(blue(table_name))
     heads = User.head()
