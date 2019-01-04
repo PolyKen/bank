@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    $("#table-display").DataTable();
     $("#btn-select-table").on("click", function(){
         let table_name = $("#table-name-to-select").val();
         $.get("/table/" + table_name, function(data){
