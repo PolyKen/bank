@@ -13,18 +13,27 @@ def index():
 
 @app.route('/table/<table_name>')
 def get_table(table_name):
-    print(blue(table_name))
+    def construct_dict(fields, values):
+        d = {}
+        for i, field in enumerate(fields):
+            d[field] = values[i]
+        return d
 
-    class Tmp(Model):
-        __table__ = table_name
-
-    rows_list = list(map(lambda obj: dict(obj), Tmp.select()))
+    select_sql = 'SELECT ? FROM {}'.format(table_name)
+    heads = get_head(select_sql)
+    all_fields_name = [field[0] for field in heads]
+    results = execute_sql(select_sql, "*")
+    rows_list = list(map(lambda v: construct_dict(all_fields_name, v), results))
+    
     for i in range(len(rows_list)):
         row = rows_list[i]
         if "start_time" in row:
             row["start_time"] = row["start_time"].strftime("%Y-%m-%d %H:%M:%S")
         if "birthday" in row:
             row["birthday"] = row["birthday"].strftime("%Y-%m-%d")
+        if "level_update_time" in row:
+            row["level_update_time"] = row["level_update_time"].strftime("%Y-%m-%d %H:%M:%S")
+
     return json.dumps(rows_list)
 
 
