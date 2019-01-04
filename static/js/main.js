@@ -22,6 +22,9 @@ function render_table(heads_list, rows_list) {
     $("#table-body").empty().append(tbody);
     $("#table-foot").empty().append(thead);
     $("#table-display").DataTable();
+    setTimeout(function(){
+        $("#table-display").DataTable();
+    }, 1);
 }
 
 function get_table_head(heads_list) {
