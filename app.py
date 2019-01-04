@@ -36,7 +36,7 @@ def get_table(table_name):
         if "level_update_time" in row:
             row["level_update_time"] = row["level_update_time"].strftime("%Y-%m-%d %H:%M:%S")
 
-    return json.dumps(rows_list)
+    return json.dumps({"heads_list": all_fields_name, "rows_list": rows_list})
 
 
 @app.route('/test')

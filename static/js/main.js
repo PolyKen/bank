@@ -61,12 +61,10 @@ function get_table_body(rows_list) {
 
 function parse_table(raw_data) {
     let json = JSON.parse(raw_data);
-    let heads_list = [];
+    let heads_list = json.heads_list;
     let rows_list = [];
-    for (let key in json[0]) {
-        heads_list.push(key);
-    }
     console.log(heads_list);
+    json = json.rows_list;
     for (let i = 0; i < json.length; i++) {
         let row = [];
         for (let j = 0; j < heads_list.length; j++) {
