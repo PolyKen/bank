@@ -9,10 +9,10 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/table/<table_name>')
+@app.route('/table/<table_name>', method=["GET"])
 def get_table(table_name):
     print(table_name)
-    return User.select()
+    return str(User.select())
 
 
 @app.route('/test')
