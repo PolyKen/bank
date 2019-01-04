@@ -12,7 +12,7 @@ def index():
 
 @app.route('/table/<table_name>', method=["GET"])
 def get_table(table_name):
-    print(table_name)
+    print(blue(table_name))
     heads = User.head()
     all_fields_name = [field[0] for field in heads]
     d = {"thead": all_fields_name, "tbody": User.select()}
