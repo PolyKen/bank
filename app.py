@@ -13,7 +13,10 @@ def index():
 @app.route('/table/<table_name>', method=["GET"])
 def get_table(table_name):
     print(table_name)
-    return json.dumps(User.select())
+    heads = User.head()
+    all_fields_name = [field[0] for field in heads]
+    d = {"thead": all_fields_name, "tbody": User.select()}
+    return json.dumps(d)
 
 
 @app.route('/test')
