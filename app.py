@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from db import *
+import json
 
 app = Flask(__name__)
 
@@ -12,7 +13,7 @@ def index():
 @app.route('/table/<table_name>', method=["GET"])
 def get_table(table_name):
     print(table_name)
-    return str(User.select())
+    return json.dumps(User.select())
 
 
 @app.route('/test')
