@@ -20,6 +20,8 @@ def get_table(table_name):
         return d
 
     heads = get_head(table_name)
+    if heads is None:
+        return "table not found"
     all_fields_name = [field[0] for field in heads]
     select_sql = 'SELECT ? FROM {}'.format(table_name)
     results = execute_sql(select_sql, "*")

@@ -3,6 +3,10 @@ $(document).ready(function () {
     $("#btn-select-table").on("click", function(){
         let table_name = $("#table-name-to-select").val();
         $.get("/table/" + table_name, function(data){
+            if (data === "table not found") {
+                alert("table not found");
+                return;
+            }
             let table = parse_table(data);
             let heads_list = table["heads_list"];
             let rows_list = table["rows_list"];
