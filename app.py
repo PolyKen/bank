@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from db import *
-import json
 
 app = Flask(__name__)
 
@@ -13,10 +12,7 @@ def index():
 @app.route('/table/<table_name>')
 def get_table(table_name):
     print(blue(table_name))
-    heads = User.head()
-    all_fields_name = [field[0] for field in heads]
-    d = {"thead": all_fields_name, "tbody": User.select()}
-    return json.dumps(d)
+    return str(list(map(lambda o: dict(o), User.select())))
 
 
 @app.route('/test')
