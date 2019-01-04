@@ -33,10 +33,12 @@ class CreditCardUser(Model):
     contact_tel = BigIntegerField(30)
     job = StringField(20)
     income = IntegerField(30)
+    level_update_time = TimestampField()
 
-    def __init__(self, id, level, contact_person, contact_tel, job, income):
+    def __init__(self, id, level, contact_person, contact_tel, job, income, level_update_time):
         super(CreditCardUser, self).__init__(id=id, level=level, contact_person=contact_person,
-                                             contact_tel=contact_tel, job=job, income=income)
+                                             contact_tel=contact_tel, job=job, income=income,
+                                             level_update_time=level_update_time)
 
 
 class Account(Model):
