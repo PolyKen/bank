@@ -17,7 +17,7 @@ function render_table(heads_list, rows_list) {
     let tbody = get_table_body(rows_list);
     $("#table-head").empty().append(thead);
     $("#table-body").empty().append(tbody);
-    $("#table-foot").empty().append(tbody);
+    $("#table-foot").empty().append(thead);
     $("#table-display").DataTable();
 }
 
@@ -45,7 +45,6 @@ function get_table_body(rows_list) {
 
 function parse_table(raw_data){
     let json = JSON.parse(raw_data);
-    console.log(json);
     let heads_list = [];
     let rows_list = [];
     for (let key in json[0]){
