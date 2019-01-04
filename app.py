@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from db import *
 
 app = Flask(__name__)
 
@@ -6,6 +7,12 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/table/<table_name>')
+def get_table(table_name):
+    print(table_name)
+    return User.select()
 
 
 @app.route('/test')
