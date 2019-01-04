@@ -14,7 +14,11 @@ def index():
 @app.route('/table/<table_name>')
 def get_table(table_name):
     print(blue(table_name))
-    rows_list = list(map(lambda o: dict(o), User.select()))
+
+    class Tmp(Model):
+        __table__ = table_name
+
+    rows_list = list(map(lambda obj: dict(obj), Tmp.select()))
     for i in range(len(rows_list)):
         row = rows_list[i]
         if "start_time" in row:
