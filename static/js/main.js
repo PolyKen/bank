@@ -1,4 +1,14 @@
 $(document).ready(function () {
+    reloadDataTable();
+    bind_event();
+    //render_table(["h1", "h2"], [["r1", "r2"], ["s1", "s2"]]);
+});
+
+function reloadDataTable(){
+    $("#table-display").DataTable();
+}
+
+function bind_event(){
     $("#btn-select-table").on("click", function(){
         let table_name = $("#table-name-to-select").val();
         $.get("/table/" + table_name, function(data){
@@ -11,9 +21,11 @@ $(document).ready(function () {
             let rows_list = table["rows_list"];
             render_table(heads_list, rows_list);
         })
+    });
+    $("#btn-reload-table").on("click", function(){
+        reloadDataTable();
     })
-    //render_table(["h1", "h2"], [["r1", "r2"], ["s1", "s2"]]);
-});
+}
 
 function render_table(heads_list, rows_list) {
     let thead = get_table_head(heads_list);
@@ -21,10 +33,7 @@ function render_table(heads_list, rows_list) {
     $("#table-head").empty().append(thead);
     $("#table-body").empty().append(tbody);
     $("#table-foot").empty().append(thead);
-    $("#table-display").DataTable();
-    setTimeout(function(){
-        $("#table-display").DataTable();
-    }, 1);
+    reloadDataTable();
 }
 
 function get_table_head(heads_list) {
