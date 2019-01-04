@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#example').DataTable();
+    $("#table-display").DataTable();
     $("#btn-select-table").on("click", function(){
         let table_name = $("#table-name-to-select").val();
         $.get("/table/" + table_name, function(data){
@@ -15,6 +15,7 @@ function render_table(heads_list, rows_list) {
     $("#table-head").empty().append(thead);
     $("#table-body").empty().append(tbody);
     $("#table-foot").empty().append(tbody);
+    $("#table-display").DataTable();
 }
 
 function get_table_head(heads_list) {
