@@ -27,12 +27,12 @@ def execute_sql(sql, *args):
         return results
 
 
-def get_head(select_sql):
+def get_head(table_name):
     conn = pymysql.connect(host=db_host, user=db_user, passwd=db_password, db="bank")
     col = None
     try:
         with conn.cursor() as cursor:
-            cursor.execute(select_sql + ";")
+            cursor.execute("select * from {}".format(table_name))
             col = cursor.description
     except Exception as e:
         print(red("failed with error: {}".format(e)))
@@ -148,7 +148,7 @@ class Model(dict, metaclass=ModelMetaClass):
 
     @classmethod
     def head(cls):
-        heads = get_head(cls.__select__.replace('?', '*'))
+        heads = get_head(cls.__table__)
         return heads
 
     @classmethod

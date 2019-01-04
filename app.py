@@ -19,12 +19,12 @@ def get_table(table_name):
             d[field] = values[i]
         return d
 
-    select_sql = 'SELECT ? FROM {}'.format(table_name)
-    heads = get_head(select_sql)
+    heads = get_head(table_name)
     all_fields_name = [field[0] for field in heads]
+    select_sql = 'SELECT ? FROM {}'.format(table_name)
     results = execute_sql(select_sql, "*")
     rows_list = list(map(lambda v: construct_dict(all_fields_name, v), results))
-    
+
     for i in range(len(rows_list)):
         row = rows_list[i]
         if "start_time" in row:
