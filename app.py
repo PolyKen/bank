@@ -33,6 +33,8 @@ def get_table(table_name):
             row["start_time"] = row["start_time"].strftime("%Y-%m-%d %H:%M:%S")
         if "birthday" in row:
             row["birthday"] = row["birthday"].strftime("%Y-%m-%d")
+        if "update_time" in row:
+            row["update_time"] = row["update_time"].strftime("%Y-%m-%d %H:%M:%S")
         if "level_update_time" in row:
             row["level_update_time"] = row["level_update_time"].strftime("%Y-%m-%d %H:%M:%S")
 
