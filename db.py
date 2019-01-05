@@ -180,10 +180,10 @@ class InterestRate(Model):
     id = IntegerField(11)
     interest_type = StringField(30)
     rate = FloatField()
-    due_months = IntegerField(11)
+    due_days = IntegerField(11)
 
-    def __init__(self, id, interest_type, rate, due_months):
-        super(InterestRate, self).__init__(id=id, type=interest_type, rate=rate, due_months=due_months)
+    def __init__(self, id, interest_type, rate, due_days):
+        super(InterestRate, self).__init__(id=id, type=interest_type, rate=rate, due_days=due_days)
 
 
 class Currency(Model):
@@ -191,21 +191,22 @@ class Currency(Model):
     id = IntegerField(11)
     name = StringField(20)
     exchange_rate = FloatField()
+    update_time = TimestampField()
 
-    def __init__(self, id, name, exchange_rate):
-        super(Currency, self).__init__(id=id, name=name, exchange_rate=exchange_rate)
+    def __init__(self, id, name, exchange_rate, update_time=None):
+        super(Currency, self).__init__(id=id, name=name, exchange_rate=exchange_rate, update_time=update_time)
 
 
 class FinancialProduct(Model):
     __table__ = 'financial_products'
     id = IntegerField(11)
     name = StringField(20)
-    due_months = IntegerField(11)
+    due_days = IntegerField(11)
     interest_rate = FloatField()
     guaranteed = IntegerField(1)
 
-    def __init__(self, id, name, due_months, interest_rate, guaranteed):
-        super(FinancialProduct, self).__init__(id=id, name=name, due_months=due_months,
+    def __init__(self, id, name, due_days, interest_rate, guaranteed):
+        super(FinancialProduct, self).__init__(id=id, name=name, due_days=due_days,
                                                interest_rate=interest_rate, guaranteed=guaranteed)
 
 

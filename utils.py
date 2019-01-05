@@ -1,5 +1,4 @@
 import asyncio
-import inspect
 
 color_dict = {"red": "31", "green": "32",
               "yellow": "33", "blue": "34", "purple": "35"}

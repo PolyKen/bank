@@ -63,7 +63,6 @@ function parse_table(raw_data) {
     let json = JSON.parse(raw_data);
     let heads_list = json.heads_list;
     let rows_list = [];
-    console.log(heads_list);
     json = json.rows_list;
     for (let i = 0; i < json.length; i++) {
         let row = [];
