@@ -64,16 +64,16 @@ function bind_event() {
             console.log("deposit");
             console.log(data);
             alert(data);
-            $("#btn-deposit").parent().children("input").val("");
+            $("#opt-deposit input").val("");
             $("#dropdown-currency_type").text("币种").append("<span class=\"caret\"></span>");
             $("#dropdown-deposit_type").text("存款类型").append("<span class=\"caret\"></span>");
         })
     });
 
     $("#btn-withdraw").on("click", function () {
-        let user_id = $("#deposit_user_id").val();
-        let account_id = $("#deposit_account_id").val();
-        let quantity = $("#deposit_quantity").val();
+        let user_id = $("#withdraw_user_id").val();
+        let account_id = $("#withdraw_account_id").val();
+        let quantity = $("#withdraw_quantity").val();
         let payload = {
             "user_id": user_id,
             "account_id": account_id,
@@ -83,7 +83,7 @@ function bind_event() {
             console.log("withdraw");
             console.log(data);
             alert(data);
-            $("#btn-deposit").parent().children("input").val("");
+            $("#opt-withdraw input").val("");
         })
     });
 }
