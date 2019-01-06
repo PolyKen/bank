@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from db import *
 import datetime
 import json
@@ -39,6 +39,39 @@ def get_table(table_name):
             row["level_update_time"] = row["level_update_time"].strftime("%Y-%m-%d %H:%M:%S")
 
     return json.dumps({"heads_list": all_fields_name, "rows_list": rows_list})
+
+
+@app.route('/deposit')
+def deposit():
+    user_id = request.args.get('user_id')
+    account_id = request.args.get('account_id')
+    quantity = request.args.get('quantity')
+    currency_type = request.args.get('currency_type')
+    deposit_type = request.args.get('deposit_type')
+
+    a = Account.query(id=account_id, user_id=user_id)
+
+    if a is None:
+        NotMatch.print()
+        return "not match error"
+
+    a.deposit(quantity=quantity, currency_type=currency_type, deposit_type=deposit_type)
+    return "success"
+
+
+@app.route('/withdraw')
+def withdraw():
+    user_id = request.args.get('user_id')
+    account_id = request.args.get('account_id')
+    quantity = request.args.get('quantity')
+
+    a = Account.query(id=account_id, user_id=user_id)
+
+    if a is None:
+        NotMatch.print()
+        return "not match error"
+
+    return a.withdraw(quantity=quantity)
 
 
 @app.route('/test')

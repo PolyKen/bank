@@ -24,6 +24,30 @@ function bind_event() {
             render_table(heads_list, rows_list);
         })
     });
+
+    $("#btn-deposit").on("click", function(){
+        let user_id = $("#deposit_user_id").val();
+        let account_id = $("#deposit_account_id").val();
+        let quantity = $("#deposit_quantity").val();
+        let currency_type = $("#deposit_currency_type").val();
+        let deposit_type = $("#deposit_deposit_type").val();
+        let payload = {"user_id": user_id, "account_id": account_id, "quantity": quantity, "currency_type": currency_type, "deposit_type": deposit_type};
+        $.get("/deposit", payload, function(data){
+            console.log("deposit");
+            console.log(data);
+        })
+    });
+
+    $("#btn-withdraw").on("click", function(){
+        let user_id = $("#withdraw_user_id").val();
+        let account_id = $("#withdraw_account_id").val();
+        let quantity = $("#withdraw_quantity").val();
+        let payload = {"user_id": user_id, "account_id": account_id, "quantity": quantity};
+        $.get("/withdraw", payload, function(data){
+            console.log("withdraw");
+            console.log(data);
+        })
+    })
 }
 
 function render_table(heads_list, rows_list) {

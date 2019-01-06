@@ -148,8 +148,20 @@
         <div class="tab-pane fade in active" id="operations">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <label for="table-name-to-select">输入表名: </label><input id="table-name-to-select" type="text">
-                    <button class="btn-default" id="btn-select-table">确认</button>
+                    <label for="deposit_user_id">储户编号: </label><input id="deposit_user_id" type="text">
+                    <label for="deposit_account_id">账号: </label><input id="deposit_account_id" type="text">
+                    <label for="deposit_quantity">金额: </label><input id="deposit_quantity" type="text">
+                    <label for="deposit_currency_type">币种: </label><input id="deposit_currency_type" type="text">
+                    <label for="deposit_deposit_type">存款类型: </label><input id="deposit_deposit_type" type="text">
+                    <button class="btn-default" id="btn-deposit">存款</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label for="withdraw_user_id">储户编号: </label><input id="withdraw_user_id" type="text">
+                    <label for="withdraw_account_id">账号: </label><input id="withdraw_account_id" type="text">
+                    <label for="withdraw_quantity">金额: </label><input id="withdraw_quantity" type="text">
+                    <button class="btn-default" id="btn-withdraw">取款</button>
                 </div>
             </div>
         </div>
