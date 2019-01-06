@@ -11,7 +11,7 @@
     <script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../static/js/fabric.min.js"></script>
     <script type="text/javascript" src="../static/DataTables/datatables.min.js"></script>
-    <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/DataTables/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../static/js/main.js"></script>
 </head>
@@ -30,7 +30,7 @@
         </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="tables">
+        <div class="tab-pane fade in active" id="tables">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <label for="table-name-to-select">输入表名: </label><input id="table-name-to-select" type="text">
@@ -145,23 +145,86 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="operations">
+        <div class="tab-pane fade" id="operations">
             <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <label for="deposit_user_id">储户编号: </label><input id="deposit_user_id" type="text">
-                    <label for="deposit_account_id">账号: </label><input id="deposit_account_id" type="text">
-                    <label for="deposit_quantity">金额: </label><input id="deposit_quantity" type="text">
-                    <label for="deposit_currency_type">币种: </label><input id="deposit_currency_type" type="text">
-                    <label for="deposit_deposit_type">存款类型: </label><input id="deposit_deposit_type" type="text">
-                    <button class="btn-default" id="btn-deposit">存款</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <label for="withdraw_user_id">储户编号: </label><input id="withdraw_user_id" type="text">
-                    <label for="withdraw_account_id">账号: </label><input id="withdraw_account_id" type="text">
-                    <label for="withdraw_quantity">金额: </label><input id="withdraw_quantity" type="text">
-                    <button class="btn-default" id="btn-withdraw">取款</button>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <h3>存款</h3>
+                    <form class="bs-example bs-example-form" role="form">
+                        <div class="input-group">
+                            <span class="input-group-addon">储户编号</span>
+                            <input type="text" id="deposit_user_id" class="form-control">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">账户</span>
+                            <input type="text" id="deposit_account_id" class="form-control">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">金额</span>
+                            <input type="text" id="deposit_quantity" class="form-control">
+                        </div>
+                    </form>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle" id="dropdown-currency_type"
+                                data-toggle="dropdown">
+                            币种
+                            <span class="caret"></span>
+                        </button>
+                        <div id="deposit_currency_type" style="display:none"></div>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-currency_type">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">RMB</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">USD</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">EUR</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">JPY</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">GBP</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">HKD</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle" id="dropdown-deposit_type"
+                                data-toggle="dropdown">
+                            存款类型
+                            <span class="caret"></span>
+                        </button>
+                        <div id="deposit_deposit_type" style="display:none"></div>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-deposit_type">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">活期</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">定期三个月</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">定期六个月</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">定期一年</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">定期两年</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">定期三年</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">定期五年</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-info" id="btn-deposit">存款</button>
                 </div>
             </div>
         </div>

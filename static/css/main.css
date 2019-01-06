@@ -55,3 +55,12 @@
 .yellow {
     color: #c17810;
 }
+
+h3 {
+    margin-bottom: 20px;
+}
+
+.dropdown {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
