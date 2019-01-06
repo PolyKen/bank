@@ -193,7 +193,7 @@ class Model(dict, metaclass=ModelMetaClass):
         for k, v in kwargs.items():
             pk_list.append("{}={}".format(k, v))
 
-        results = cls.select(clause="WHERE {}".format(join(pk_list)))
+        results = cls.select(clause="WHERE {}".format(join(pk_list, " and ")))
         if len(results) > 0:
             return results[0]
         else:
