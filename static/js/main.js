@@ -64,7 +64,9 @@ function bind_event() {
             console.log("deposit");
             console.log(data);
             alert(data);
-            $("#btn-deposit").parent().children("input").empty();
+            $("#btn-deposit").parent().children("input").val("");
+            $("#dropdown-currency_type").text("币种").append("<span class=\"caret\"></span>");
+            $("#dropdown-deposit_type").text("存款类型").append("<span class=\"caret\"></span>");
         })
     });
 }
