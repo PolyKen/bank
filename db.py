@@ -71,7 +71,7 @@ class Account(Model):
     def withdraw(self, deposit_id, quantity):
         d = Deposit.query(id=deposit_id)
 
-        if d.account_id != self.id:
+        if d is None or d.account_id != self.id:
             NotMatch.print()
             return
 
