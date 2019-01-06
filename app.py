@@ -80,7 +80,10 @@ def withdraw():
         InvalidParameter.print()
         return "invalid parameter error"
 
-    return a.withdraw(deposit_id=int(deposit_id), quantity=float(quantity))
+    currency_name = Currency.query(id=Deposit.query(id=deposit_id).currency_type).name
+
+    return "withdraw {} {}".format(currency_name,
+                                   a.withdraw(deposit_id=int(deposit_id), quantity=float(quantity)))
 
 
 @app.route('/test')
