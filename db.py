@@ -194,7 +194,7 @@ class InterestRate(Model):
     due_days = IntegerField(11)
 
     def __init__(self, id, interest_type, rate, due_days):
-        super(InterestRate, self).__init__(id=id, type=interest_type, rate=rate, due_days=due_days)
+        super(InterestRate, self).__init__(id=id, interest_type=interest_type, rate=rate, due_days=due_days)
 
 
 class Currency(Model):
