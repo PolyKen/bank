@@ -55,6 +55,10 @@ def deposit():
         NotMatch.print()
         return "not match error"
 
+    if quantity is None or currency_type is None or deposit_type is None:
+        InvalidParameter.print()
+        return "invalid parameter error"
+
     a.deposit(quantity=quantity, currency_type=currency_type, deposit_type=deposit_type)
     return "success"
 
@@ -70,6 +74,10 @@ def withdraw():
     if a is None:
         NotMatch.print()
         return "not match error"
+
+    if quantity is None:
+        InvalidParameter.print()
+        return "invalid parameter error"
 
     return a.withdraw(quantity=quantity)
 

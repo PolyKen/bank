@@ -42,7 +42,7 @@ function bind_event() {
     $("ul.dropdown-menu a").on("click", function () {
         $(this).parents(".dropdown").children("button").text($(this).text() + " ");
         $(this).parents(".dropdown").children("button").append("<span class=\"caret\"></span>");
-        $("#deposit_currency_type").text($(this).text());
+        $(this).parents(".dropdown").children(".hidden-value").text($(this).text());
     });
 
     $("#btn-deposit").on("click", function () {
