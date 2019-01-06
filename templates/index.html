@@ -22,15 +22,15 @@
 </div>
 <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab">
-        <li class="active">
+        <li id="tab-1" class="active">
             <a href="#tables" data-toggle="tab">查看表格</a>
         </li>
-        <li>
+        <li id="tab-2">
             <a href="#operations" data-toggle="tab">功能</a>
         </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="tables">
+        <div class="tab-pane active" id="tables">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <label for="table-name-to-select">输入表名: </label><input id="table-name-to-select" type="text">
@@ -145,7 +145,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="operations">
+        <div class="tab-pane" id="operations">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <label for="deposit_user_id">储户编号: </label><input id="deposit_user_id" type="text">
