@@ -43,6 +43,8 @@ function bind_event() {
         $.get("/deposit", payload, function(data){
             console.log("deposit");
             console.log(data);
+            alert(data);
+            $("#btn-deposit").parent().children("input").empty();
         })
     });
 
@@ -54,6 +56,8 @@ function bind_event() {
         $.get("/withdraw", payload, function(data){
             console.log("withdraw");
             console.log(data);
+            alert(data);
+            $("#btn-withdraw").parent().children("input").empty();
         })
     })
 }
