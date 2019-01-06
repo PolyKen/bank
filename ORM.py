@@ -226,10 +226,3 @@ class Model(dict, metaclass=ModelMetaClass):
 if __name__ == '__main__':
     tst = StringField(max_length=20)
     print(tst)
-    H = type('Hello', (object,), {"att1": lambda o: print("att1"), "att2": 13})
-    h = H()
-    h.att1()
-    print(h.att2)
-    print(dir(h))
-    lst = [1, 2, 3, 6, 1, 4, 2]
-    print(join(lst))

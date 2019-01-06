@@ -1,6 +1,7 @@
 $(document).ready(function () {
     reloadDataTable();
     bind_event();
+    $("#myTab a:last").tab('show');
     //render_table(["h1", "h2"], [["r1", "r2"], ["s1", "s2"]]);
 });
 
