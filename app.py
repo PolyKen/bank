@@ -59,7 +59,7 @@ def deposit():
         InvalidParameter.print()
         return "invalid parameter error"
 
-    a.deposit(quantity=quantity, currency_type=currency_type, deposit_type=deposit_type)
+    a.deposit(quantity=float(quantity), currency_type=int(currency_type), deposit_type=int(deposit_type))
     return "success"
 
 
