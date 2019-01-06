@@ -74,9 +74,11 @@ function bind_event() {
         let user_id = $("#withdraw_user_id").val();
         let account_id = $("#withdraw_account_id").val();
         let quantity = $("#withdraw_quantity").val();
+        let deposit_id = $("#withdraw_deposit_id").val();
         let payload = {
             "user_id": user_id,
             "account_id": account_id,
+            "deposit_id": deposit_id,
             "quantity": quantity
         };
         $.get("/withdraw", payload, function (data) {
