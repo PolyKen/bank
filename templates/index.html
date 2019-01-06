@@ -26,7 +26,10 @@
             <a href="#tables" data-toggle="tab">查看表格</a>
         </li>
         <li id="tab-2">
-            <a href="#operations" data-toggle="tab">功能</a>
+            <a href="#opt-deposit" data-toggle="tab">存款</a>
+        </li>
+        <li id="tab-3">
+            <a href="#opt-withdraw" data-toggle="tab">取款</a>
         </li>
     </ul>
     <div class="tab-content">
@@ -145,7 +148,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="operations">
+        <div class="tab-pane fade" id="opt-deposit">
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                     <h3>存款</h3>
@@ -225,6 +228,31 @@
                         </ul>
                     </div>
                     <button class="btn btn-info" id="btn-deposit">存款</button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="opt-withdraw">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <h3>取款</h3>
+                    <form class="bs-example bs-example-form" role="form">
+                        <div class="input-group">
+                            <span class="input-group-addon">储户编号</span>
+                            <input type="text" id="withdraw_user_id" class="form-control">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">账户</span>
+                            <input type="text" id="withdraw_account_id" class="form-control">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">金额</span>
+                            <input type="text" id="withdraw_quantity" class="form-control">
+                        </div>
+                    </form>
+                    <div class="dropdown"></div>
+                    <button class="btn btn-info" id="btn-withdraw">取款</button>
                 </div>
             </div>
         </div>

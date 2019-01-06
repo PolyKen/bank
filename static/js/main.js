@@ -69,6 +69,23 @@ function bind_event() {
             $("#dropdown-deposit_type").text("存款类型").append("<span class=\"caret\"></span>");
         })
     });
+
+    $("#btn-withdraw").on("click", function () {
+        let user_id = $("#deposit_user_id").val();
+        let account_id = $("#deposit_account_id").val();
+        let quantity = $("#deposit_quantity").val();
+        let payload = {
+            "user_id": user_id,
+            "account_id": account_id,
+            "quantity": quantity
+        };
+        $.get("/withdraw", payload, function (data) {
+            console.log("withdraw");
+            console.log(data);
+            alert(data);
+            $("#btn-deposit").parent().children("input").val("");
+        })
+    });
 }
 
 function render_table(heads_list, rows_list) {
