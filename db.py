@@ -24,6 +24,9 @@ class User(Model):
                                    city=city, mobile=mobile, email=email,
                                    birthday=birthday, is_vip=is_vip)
 
+    def accounts(self):
+        return Account.select(clause="where user_id={}".format(self.id))
+
 
 class CreditCardUser(Model):
     __table__ = 'credit_card_users'
@@ -50,11 +53,19 @@ class Account(Model):
     def __init__(self, id, branch_id, user_id):
         super(Account, self).__init__(id=id, branch_id=branch_id, user_id=user_id)
 
+    def deposits(self):
+        return Deposit.select(clause="where account_id={}".format(self.id))
+
+    def overdrafts(self):
+        return Overdraft.select(clause="where account_id={}".format(self.id))
+
+    def fp_transactions(self):
+        return FPTransaction.select(clause="where account_id={}".format(self.id))
+
     @log
     def deposit(self, quantity, deposit_type, currency_type):
-        deposit = Deposit(id=None, quantity=quantity, deposit_type=deposit_type,
-                          currency_type=currency_type, account_id=self.id, start_time=None)
-        deposit.insert()
+        Deposit(id=None, quantity=quantity, deposit_type=deposit_type,
+                currency_type=currency_type, account_id=self.id, start_time=None).insert()
 
     @log
     def withdraw(self, deposit_id, quantity):
