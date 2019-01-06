@@ -183,7 +183,10 @@ class Model(dict, metaclass=ModelMetaClass):
                 return d
 
         results = execute_sql(select_sql, column_list)
-        obj_list = list(map(lambda v: construct_obj(fields_name, v), results))
+        try:
+            obj_list = list(map(lambda v: construct_obj(fields_name, v), results))
+        except TypeError:
+            obj_list = [None]
         return obj_list
 
     @classmethod
