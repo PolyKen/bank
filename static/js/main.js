@@ -13,10 +13,12 @@ function reloadDataTable() {
 function bind_event() {
     $("#tab-1").on("click", function(){
         $("#tab-1 a").tab('show');
+        $("#tab-1").addClass('active');
         $("#tab-2").removeClass('active');
     });
     $("#tab-2").on("click", function(){
         $("#tab-2 a").tab('show');
+        $("#tab-2").addClass('active');
         $("#tab-1").removeClass('active');
     });
     $("#btn-select-table").on("click", function () {
