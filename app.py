@@ -67,6 +67,7 @@ def deposit():
 def withdraw():
     user_id = request.args.get('user_id')
     account_id = request.args.get('account_id')
+    deposit_id = request.args.get('deposit_id')
     quantity = request.args.get('quantity')
 
     a = Account.query(id=account_id, user_id=user_id)
@@ -79,7 +80,7 @@ def withdraw():
         InvalidParameter.print()
         return "invalid parameter error"
 
-    return a.withdraw(quantity=quantity)
+    return a.withdraw(deposit_id=deposit_id, quantity=quantity)
 
 
 @app.route('/test')
