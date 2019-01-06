@@ -59,8 +59,10 @@ def deposit():
         InvalidParameter.print()
         return "invalid parameter error"
 
-    a.deposit(quantity=float(quantity), currency_type=int(currency_type), deposit_type=int(deposit_type))
-    return "success"
+    a.deposit(quantity=quantity, currency_type=currency_type, deposit_type=deposit_type)
+    currency_name = Currency.query(id=currency_type).name
+    deposit_type_name = InterestRate.query(id=deposit_type).interest_type
+    return "deposit {} {}, type: {}".format(currency_name, quantity, deposit_type_name)
 
 
 @app.route('/withdraw')
@@ -83,7 +85,7 @@ def withdraw():
     currency_name = Currency.query(id=Deposit.query(id=deposit_id).currency_type).name
 
     return "withdraw {} {}".format(currency_name,
-                                   a.withdraw(deposit_id=int(deposit_id), quantity=float(quantity)))
+                                   a.withdraw(deposit_id=deposit_id, quantity=quantity))
 
 
 @app.route('/test')
